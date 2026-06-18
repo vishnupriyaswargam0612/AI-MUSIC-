@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlgoRythm - Studio Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Tone.js for AI audio synthesis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    
+    <!-- Face API for real-time facial expression tracking -->
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+</head>
+<body class="theme-bg mood-relaxed">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="topbar">
+        <div class="logo" onclick="window.location.reload()">🎧 Algo<span>Rythm</span></div>
+        <div class="user-box">
+            <span>👤 <span id="userDisplay">User</span></span>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </header>
+
+    <!-- DASHBOARD WORKSPACE -->
+    <main class="dashboard">
+
+        <!-- COLUMN 1: SIDEBAR HISTORY -->
+        <section class="panel sidebar">
+            <h3>📚 Vibe History</h3>
+            <div id="historyList">
+                <div style="color:var(--text-secondary); text-align:center; font-size:12px; background:none; border:none;">No recent vibes</div>
+            </div>
+            
+            <div class="gallery-section">
+                <h3>🎨 Art Gallery</h3>
+                <div id="coversList" class="gallery-grid">
+                    <!-- Art pieces loaded via JS -->
+                </div>
+            </div>
+            
+            <div class="settings-section" style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 20px;">
+                <h3>⚙️ Studio Settings</h3>
+                <div style="display:flex; flex-direction:column; gap:10px; margin-top: 12px;">
+                    <label style="font-size:12px; color:var(--text-secondary); font-weight: 500;">Google Gemini API Key:</label>
+                    <input id="geminiKeyInput" type="password" placeholder="AIzaSy..." style="width:100%; padding:10px 12px; background:rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.08); border-radius:10px; color:white; font-size:12px; outline: none;" onchange="saveApiKey()">
+                    <span style="font-size:10px; color:var(--text-secondary); line-height: 1.4;">Saved locally in your browser. Enables real generative AI graphics!</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- COLUMN 2: MOOD CONTROLLER -->
+        <section class="panel center-panel">
+            <h3>Mood & Vibe Input</h3>
+            <p style="color: var(--text-secondary); font-size:13px; margin-bottom: 20px;">Choose how you want to share your vibe with AlgoRythm.</p>
+            
+            <!-- Tab switches -->
+            <div class="mode-selectors">
+                <button id="mode-camera" class="mode-btn active" onclick="selectMode('camera')">📷 Camera</button>
+                <button id="mode-type" class="mode-btn" onclick="selectMode('type')">⌨ Type</button>
+                <button id="mode-emoji" class="mode-btn" onclick="selectMode('emoji')">😊 Emoji</button>
+            </div>
+
+            <!-- Content boxes -->
+            <div class="box-container">
+                <!-- CAMERA BOX -->
+                <div id="cameraBox" class="camera-card">
+                    <div class="video-container">
+                        <video id="video" autoplay playsinline muted></video>
+                        <canvas id="overlayCanvas"></canvas>
+                        <div class="camera-badge"><span id="camStatus"></span>LIVE</div>
+                    </div>
+                    <button class="btn-primary" onclick="detectMoodFromCamera()">Capture & Detect Vibe</button>
+                </div>
+
+                <!-- TYPE BOX -->
+                <div id="typeBox" class="type-card hidden">
+                    <textarea id="moodInput" placeholder="Type how you are feeling... (e.g. 'Stressing about my final project, need to chill out')" oninput="detectMoodFromInputText()"></textarea>
+                    
+                    <select id="moodSelect" onchange="selectMoodFromDropdown()">
+                        <option value="">Or Select Vibe Manually</option>
+                        <option value="happy">Happy 😊</option>
+                        <option value="sad">Sad 😔</option>
+                        <option value="romantic">Romantic ❤️</option>
+                        <option value="relaxed">Relaxed 😌</option>
+                        <option value="energetic">Energetic ⚡</option>
+                    </select>
+                </div>
+
+                <!-- EMOJI BOX -->
+                <div id="emojiBox" class="emoji-grid hidden">
+                    <div class="emoji-card" id="emoji-happy" onclick="selectEmojiMood('happy')">
+                        <div class="emoji">😊</div>
+                        <div class="mood-label">Happy</div>
+                    </div>
+                    <div class="emoji-card" id="emoji-sad" onclick="selectEmojiMood('sad')">
+                        <div class="emoji">😔</div>
+                        <div class="mood-label">Sad</div>
+                    </div>
+                    <div class="emoji-card" id="emoji-romantic" onclick="selectEmojiMood('romantic')">
+                        <div class="emoji">❤️</div>
+                        <div class="mood-label">Romantic</div>
+                    </div>
+                    <div class="emoji-card" id="emoji-relaxed" onclick="selectEmojiMood('relaxed')">
+                        <div class="emoji">😌</div>
+                        <div class="mood-label">Relaxed</div>
+                    </div>
+                    <div class="emoji-card" id="emoji-energetic" onclick="selectEmojiMood('energetic')">
+                        <div class="emoji">⚡</div>
+                        <div class="mood-label">Energetic</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCENARIO BOX (Generates the Custom Album Cover) -->
+            <div class="scenario-section">
+                <h4>🎯 Custom Art Scenario</h4>
+                <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">Describe the scene for your custom-generated album cover art.</p>
+                <div class="scenario-input-wrapper">
+                    <input id="scenarioInput" type="text" placeholder="e.g. 'Coffee shop on a rainy afternoon' or 'Cyberpunk sunrise'" value="Vibe Symphony">
+                    <button class="btn-primary" onclick="generateFromScenario()">Compose Art</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- COLUMN 3: STUDIO AND PLAYER -->
+        <section class="panel studio-panel">
+            <h3>Vibe Studio</h3>
+            
+            <!-- Large Album Cover Display -->
+            <div class="album-art-container" id="coverContainer">
+                <img id="albumCoverImg" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'><rect width='100%' height='100%' fill='%23111'/><text x='50%27 y='50%27 fill='%23555' font-size='14' font-family='Outfit' text-anchor='middle'>Vibe Art Appears Here</text></svg>" alt="Album Cover">
+                <div class="album-art-loader">
+                    <div class="spinner"></div>
+                    <div>Composing Artwork...</div>
+                </div>
+            </div>
+
+            <!-- Mood Badge -->
+            <div class="mood-badge">Vibe: <span id="mood" class="vibe">relaxed</span></div>
+
+            <!-- Audio Spectrum -->
+            <div class="visualizer-card">
+                <div class="visualizer-label">Audio Spectrum</div>
+                <canvas id="visualizerCanvas" width="350" height="60"></canvas>
+            </div>
+
+            <!-- Audio Player -->
+            <div class="audio-player-wrapper">
+                <div class="audio-controls">
+                    <button id="playBtn" class="play-btn" onclick="togglePlay()">▶</button>
+                </div>
+                
+                <div class="audio-progress">
+                    <span id="currentTime">0:00</span>
+                    <input type="range" id="progressBar" class="audio-slider" min="0" max="100" value="0" oninput="seekAudio()">
+                    <span id="duration">0:00</span>
+                </div>
+                
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:5px; width:100%;">
+                    <button id="downloadBtn" class="btn-outline" style="padding:6px 14px; font-size:12px;" onclick="downloadAlbumCover()" disabled>Download Cover</button>
+                    <div style="font-size:12px; color:var(--text-secondary); display:flex; align-items:center; gap:8px;">
+                        <span>Vol:</span>
+                        <input type="range" id="volumeSlider" class="audio-slider" style="width:70px;" min="0" max="100" value="70" oninput="changeVolume()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tone.js Ambient Synth Controller -->
+            <div class="synth-card">
+                <div class="synth-header">Tone.js Ambient Synth <span id="synthStatus" style="color:var(--color-energetic)">INACTIVE</span></div>
+                <div class="synth-controls">
+                    <button class="btn-outline" id="synthBtn" style="width:100%;" onclick="toggleToneSynth()">Activate Synth</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- HIDDEN AUDIO ELEMENT -->
+    <audio id="audioPlayer"></audio>
+
+    <!-- MAIN CLIENT LOGIC -->
+    <script src="script.js"></script>
+</body>
+</html>

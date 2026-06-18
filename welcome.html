@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome - AlgoRythm</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        .splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 10;
+        }
+        .logo-large {
+            font-size: 64px;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -2px;
+            text-align: center;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .logo-large span {
+            color: var(--color-romantic);
+            text-shadow: 0 0 25px rgba(255, 159, 243, 0.6);
+            animation: textPulse 2s infinite ease-in-out alternate;
+        }
+        @keyframes textPulse {
+            from { text-shadow: 0 0 15px rgba(255, 159, 243, 0.4); }
+            to { text-shadow: 0 0 35px rgba(255, 159, 243, 0.8); }
+        }
+        .loading-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+        .equalizer {
+            display: flex;
+            gap: 8px;
+        }
+        .equalizer-bar {
+            width: 8px;
+            height: 60px;
+            background: linear-gradient(to top, var(--color-romantic), var(--color-happy));
+            border-radius: 10px;
+            animation: bounce 0.8s infinite ease-in-out alternate;
+            transform-origin: bottom;
+        }
+        .equalizer-bar:nth-child(2) { animation-delay: 0.15s; background: linear-gradient(to top, var(--color-happy), var(--color-energetic)); }
+        .equalizer-bar:nth-child(3) { animation-delay: 0.3s; background: linear-gradient(to top, var(--color-energetic), var(--color-romantic)); }
+        .equalizer-bar:nth-child(4) { animation-delay: 0.45s; background: linear-gradient(to top, var(--color-romantic), var(--color-relaxed)); }
+        .equalizer-bar:nth-child(5) { animation-delay: 0.6s; background: linear-gradient(to top, var(--color-relaxed), var(--color-sad)); }
+        .equalizer-bar:nth-child(6) { animation-delay: 0.75s; background: linear-gradient(to top, var(--color-sad), var(--color-romantic)); }
+
+        @keyframes bounce {
+            0% { transform: scaleY(0.2); }
+            100% { transform: scaleY(1.3); }
+        }
+    </style>
+</head>
+<body class="theme-bg mood-romantic">
+
+<div class="splash">
+    <div class="logo-large">
+        🎧 Algo<span>Rythm</span>
+    </div>
+    <div class="loading-text">AI Music Experience</div>
+    
+    <div class="equalizer">
+        <div class="equalizer-bar"></div>
+        <div class="equalizer-bar"></div>
+        <div class="equalizer-bar"></div>
+        <div class="equalizer-bar"></div>
+        <div class="equalizer-bar"></div>
+        <div class="equalizer-bar"></div>
+    </div>
+</div>
+
+<script>
+    // Fast check for active user session on load
+    fetch('/api/auth/session')
+        .then(res => res.json())
+        .then(data => {
+            setTimeout(function() {
+                if (data.logged_in) {
+                    window.location.replace("index.html");
+                } else {
+                    window.location.replace("login.html");
+                }
+            }, 1800);
+        })
+        .catch(err => {
+            // Fallback if backend API is not responding
+            setTimeout(function() {
+                window.location.replace("login.html");
+            }, 1800);
+        });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AlgoRythm - Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-bg mood-happy">
+
+<div class="login-center">
+    <div class="logo">
+        🎧 Algo<span>Rythm</span>
+    </div>
+    <div class="tagline">AI Music Experience</div>
+
+    <div class="login-box">
+        <!-- LOGIN SECTION -->
+        <div id="loginBox">
+            <input id="email" type="email" placeholder="Email address" autocomplete="email">
+            <br><br>
+            <input id="password" type="password" placeholder="Password" autocomplete="current-password">
+            <br><br>
+            <button onclick="login()">Log In</button>
+            
+            <p class="register-link">
+                Don't have an account? 
+                <a href="javascript:void(0)" onclick="showSignup()">Sign Up</a>
+            </p>
+        </div>
+
+        <!-- SIGNUP SECTION (HIDDEN BY DEFAULT) -->
+        <div id="signupBox" class="hidden">
+            <input id="newEmail" type="email" placeholder="New email address" autocomplete="email">
+            <input id="newPassword" type="password" placeholder="Create Password" autocomplete="new-password">
+            <button onclick="signup()">Create Account</button>
+            
+            <p class="register-link">
+                Already have an account? 
+                <a href="javascript:void(0)" onclick="showLogin()">Log In</a>
+            </p>
+        </div>
+
+        <p id="msg"></p>
+    </div>
+</div>
+
+<script src="auth.js"></script>
+</body>
+</html>
