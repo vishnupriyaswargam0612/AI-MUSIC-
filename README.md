@@ -4,7 +4,6 @@
 
 CoverComposer is an AI-powered web application that combines **emotion detection**, **mood-based music recommendation**, and **AI-generated album artwork** into a single interactive platform. Users can detect their emotions through facial expressions or manually select a mood, receive personalized music recommendations, and generate unique album covers using Generative AI.
 
----
 
 ## 🚀 Features
 
@@ -49,8 +48,6 @@ CoverComposer is an AI-powered web application that combines **emotion detection
 * Saves listening history
 * Stores generated covers and mood records
 
----
-
 ## 🏗️ System Architecture
 
 ### Frontend Layer
@@ -73,7 +70,7 @@ CoverComposer is an AI-powered web application that combines **emotion detection
 
 * SQLite3
 
----
+
 
 ## 📂 Project Structure
 
@@ -98,7 +95,7 @@ CoverComposer/
 └── README.md
 ```
 
----
+
 
 ## ⚙️ Technologies Used
 
@@ -111,7 +108,7 @@ CoverComposer/
 | Emotion Detection | Face API.js           |
 | Version Control   | Git & GitHub          |
 
----
+
 
 ## 🔄 Workflow
 
@@ -125,7 +122,7 @@ CoverComposer/
 8. History and artwork are stored in SQLite.
 9. Users can revisit previous activities through History and Gallery modules.
 
----
+
 
 ## 💾 Database Tables
 
@@ -233,7 +230,7 @@ http://127.0.0.1:8000
 * Advanced recommendation engine
 * User profile customization
 
----
+
 
 ## 🌱 Sustainable Development Goal (SDG)
 
@@ -241,14 +238,21 @@ http://127.0.0.1:8000
 
 CoverComposer promotes emotional well-being by recognizing users' moods and providing personalized music experiences. Through emotion-aware recommendations and creative AI-generated artwork, the platform helps users express emotions, reduce stress, and enhance mental wellness through music and artistic engagement.
 
----
+
 
 ## 👥 Team
 
 Developed as part of a Generative AI Project focused on combining Artificial Intelligence, Emotion Recognition, Music Recommendation Systems, and Creative Content Generation.
 
----
+
 
 ## 📜 License
 
 This project is developed for educational and research purposes.
+👩‍💻 Author
+Swargam Vishnu Priya
+
+Computer Science and Engineering Student
+Prasad V. Potluri Siddhartha Institute of Technology (PVPSIT)
+
+📧 Email: vishnupriyaswargam0612@gmail.com
