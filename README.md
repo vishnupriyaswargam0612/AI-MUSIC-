@@ -151,7 +151,7 @@ Stores:
 * User Information
 * Cover Metadata
 
----
+
 
 ## 📸 Key Modules
 
@@ -218,7 +218,7 @@ uvicorn main:app --reload
 http://127.0.0.1:8000
 ```
 
----
+
 
 ## 🎯 Future Enhancements
 
@@ -249,6 +249,8 @@ Developed as part of a Generative AI Project focused on combining Artificial Int
 ## 📜 License
 
 This project is developed for educational and research purposes.
+
+
 👩‍💻 Author
 Swargam Vishnu Priya
 
